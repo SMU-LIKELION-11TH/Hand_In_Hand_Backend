@@ -1,0 +1,23 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/mail_checked.css' %}" />
+    <title>유효하지 않은 페이지입니다</title>
+  </head>
+  <body>
+    <hr />
+    <div class="find_id_result_header">
+      <p>오류</p>
+    </div>
+    <hr />
+    <div class="bottom_find_id_result_header">
+      <a href="./home_logout.html"><img src="{% static 'image/email_error.png' %}" /></a>
+    </div>
+    <div class="wrap_find_id_result_content">
+      <div class="email_box">유효하지 않은 페이지 입니다.</div>
+    </div>
+  </body>
+</html>

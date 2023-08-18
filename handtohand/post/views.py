@@ -62,10 +62,12 @@ def create_post(request):
 def post_list(request):
     if request.method == "POST":
         data = json.loads(request.body)
+        #data = request.POST
         area_name = data.get('area')
         try:
             area = Area.objects.get(name=area_name)
-            posts = Post.objects.filter(area=area)
+            posts = Post.objects.filter(area=area).order_by('-created_at')
+
 
             post_list = []
             for post in posts:
@@ -79,7 +81,8 @@ def post_list(request):
                         "user": post.user.nickname,  # Assuming user has a 'nickname' field
                         "area": post.area.name,       # Assuming area has a 'name' field
                         "numChat": post.numChat,
-                        "declare": post.declare
+                        "declare": post.declare,
+                        "userId" : post.user_id
                     }
                 }
                 post_list.append(post_data)
@@ -96,6 +99,7 @@ def post_delete(request, pk):
 
 def post_detail(request, pk):
     post = Post.objects.get(id=pk)
+
     # post.save()
     context = {
         "id" : post.pk,
@@ -122,21 +126,15 @@ def declare_post(request, pk):
 
 def update_post(request,pk):# 게시물 수정
     post = Post.objects.get(id=pk)
-    if request.method == 'POST':
+    if request.method == 'PUT':
         data = json.loads(request.body)
-
+        print(data)
         title = data.get('title')
         content = data.get('content')
         point = data.get('point')
-        area = data.get('area')
-        token = data.get('token')
-        token = Token.objects.get(token=token)
-        user = token.nickname
         post.title = title
         post.content = content
         post.point = point
-        post.area = area
-        post.user = user
         post.save()
     return JsonResponse({'message': '수정 성공'})
 
@@ -162,10 +160,18 @@ def my_post(request):
                     "user": post.user.nickname,  # Assuming user has a 'nickname' field
                     "area": post.area.name,       # Assuming area has a 'name' field
                     "numChat": post.numChat,
-                    "declare": post.declare
+                    "declare": post.declare,
+                    "userid": post.user_id
                 }
             }
             post_list.append(post_data)
-
+        print(post_list)
         return JsonResponse(post_list, safe=False)
 
+def get_areas(request):
+    try:
+        areas = Area.objects.all()
+        areas_list = [{'id': area.id, 'name': area.name} for area in areas]
+        return JsonResponse({'areas': areas_list})
+    except Exception as e:
+        return JsonResponse({'error': f'오류가 발생했습니다: {str(e)}'}, status=500)

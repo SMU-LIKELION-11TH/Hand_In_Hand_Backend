@@ -15,6 +15,7 @@ class User(models.Model):
     point = models.IntegerField()
     adopt_count = models.IntegerField(default=0)
     area = models.ForeignKey('post.Area', on_delete=models.CASCADE, null=True)
+    is_verified = models.BooleanField(default=False)
 
     class Meta:
         app_label = 'user'
@@ -52,3 +53,26 @@ class Token(models.Model):
 
     def generate_verification_token(self):
         return ''.join(random.choices(string.ascii_letters + string.digits, k=100))
+
+
+class PasswordVerification(models.Model):
+    email = models.EmailField(unique=True, max_length=30, null=True)
+    token = models.CharField(max_length=6, null=True)
+    is_verified = models.BooleanField(default=False)
+
+    class Meta:
+        app_label = 'user'
+
+    def generate_verification_token(self):
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            self.token = self.generate_verification_token()
+        super().save(*args, **kwargs)
+
+    def verify(self):
+        self.is_verified = True
+
+    def verification(self):
+        return self.is_verified

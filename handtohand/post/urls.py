@@ -13,6 +13,7 @@ urlpatterns = [
     # path('delete/<int:id>/', views.delete_post, name='delete_post'),
     path('delete/<int:pk>/', views.post_delete, name="post_delete"),
     path('update/<int:pk>/', views.update_post, name="update_post"),
-    path('my_post/', views.my_post, name="my_post")
+    path('my_post/', views.my_post, name="my_post"),
+    path('area/', views.get_areas, name="get_areas")
 
 ]

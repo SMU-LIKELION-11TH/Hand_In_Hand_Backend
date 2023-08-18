@@ -1,0 +1,23 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/mail_checked.css' %}" />
+    <title>이메일 인증 완료</title>
+  </head>
+  <body>
+    <hr />
+    <div class="find_id_result_header">
+      <p>이메일 확인</p>
+    </div>
+    <hr />
+    <div class="bottom_find_id_result_header">
+      <a href="./home_logout.html"><img src="{% static 'image/mail_checked.png' %}" /></a>
+    </div>
+    <div class="wrap_find_id_result_content">
+      <div class="email_box">계정이 안전하게 확인되었습니다.</div>
+    </div>
+  </body>
+</html>
